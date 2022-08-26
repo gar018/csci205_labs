@@ -1,6 +1,20 @@
-# csci205_labs
+# CSCI 205
 
+## Course Info:
 
+Instructor: Professor Brian King
+Semester: Fall 2022
+Section: 01 - 9:00-9:50AM
+
+## Student Info:
+
+Name: Gordon Rose
+Major: CompSci Engineer
+About Me: Intermediate Java Programmer - Beginner Git user
+
+# Project: csci205_labs
+
+csci205_labs git repo
 
 ## Getting started
 
