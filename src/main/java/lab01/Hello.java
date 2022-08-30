@@ -12,11 +12,27 @@
 * *****************************************/
 
 package lab01;
-
+import java.util.Scanner;
 public class Hello
 {
     public static void main(String[] args) {
-        System.out.println("Programming is not a spectator sport!");
+        Scanner sc = new Scanner(System.in);
+        System.out.println("What is your name?");
+        String userName = sc.nextLine();
+        System.out.println(userName + ", programming is not a spectator sport!");
+        System.out.println(userName + ", your name is " + userName.length() + " characters long.");
+        System.out.println("What is your age?");
+        int userAge = sc.nextInt();
+        if (userAge < 20) {
+            System.out.println("You're a teenager.");
+        }
+        else if (userAge >= 30) {
+            System.out.println("You're at least 30.");
+        }
+        else{
+            System.out.println("You're in your 20s.");
+        }
+        sc.close();
         System.exit(0);
     }
 }
