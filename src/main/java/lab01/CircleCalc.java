@@ -40,6 +40,7 @@ public class CircleCalc {
         System.out.println("Quadrant: " + quadrant);
         System.out.printf("Your coordinates are: (%.2f , %.2f)",xCoord,yCoord);
         System.out.println("\nGoodbye!");
+        sc.close();
     }
 
     static double DegreesToRadians(double radians) { 
