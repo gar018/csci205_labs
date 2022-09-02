@@ -22,3 +22,36 @@ Primitive types used 0.2% of the time of wrapper objects.
 Based on earlier in the lab explaining how Wrapper Objects work, 
 it is likely the need for the wrapper to constantly reference the number inside of it in order to 
 complete arithmetic is incrmentally adding on additional needed time to complete each computation.
+
+4.1 -
+Fibonacci number to compute:
+20
+Recursive fib: 6765 Time: 0.8358 ms
+Non-recursive fib: 6765 Time: 0.0028 ms
+Non-recursive fib with BigInteger: 6765 Time: 0.4121 ms
+
+Fibonacci number to compute:
+30
+Recursive fib: 832040 Time: 6.9045 ms
+Non-recursive fib: 832040 Time: 0.0191 ms
+Non-recursive fib with BigInteger: 832040 Time: 0.3051 ms
+
+Fibonacci number to compute:
+40
+Recursive fib: 102334155 Time: 614.7528 ms
+Non-recursive fib: 102334155 Time: 0.0225 ms
+Non-recursive fib with BigInteger: 102334155 Time: 0.3186 ms
+
+Fibonacci number to compute:
+60
+Recursive fib: COULD NOT COMPUTE
+Non-recursive fib: 1820529360 Time: 0.0087 ms
+Non-recursive fib with BigInteger: 1548008755920 Time: 0.4774 ms
+
+4.2 -
+When asked to find a large nth number of fibonacci, a recursive solution has to recursively 
+call itself twice for every number that is not 0 or 1. For smaller numbers, this does not add a lot of
+additional computational speed difference, but as n increases the complexity increases as it begins to
+call itself exponentially more and more. (O(2^N-1) running time?) This is in contrast to a non-
+recursive solution where the while loop used is only being cycled the n number times, and addition is
+being done between variables.
