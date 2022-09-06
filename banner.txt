@@ -4,7 +4,7 @@
 * Section: 01 - 9:00-9:50AM
 *
 * Name: Gordon Rose
-* Date: xx/xx/2002
+* Date: xx/xx/2022
 * Lab / Assignment:
 *
 * Description:
