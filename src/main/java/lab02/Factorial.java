@@ -30,7 +30,7 @@ public class Factorial {
     /**
      * Recursive function to compute the factorial of a number with BigInteger
      * 
-     * @param args
+     * @param num
      */
     public static BigInteger facBigInteger(BigInteger num) {
         if (num.equals(BigInteger.ZERO)) {
