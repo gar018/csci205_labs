@@ -31,7 +31,7 @@ public class HelloIntelliJ {
     private static String sFullName;
 
     /**
-     * our main program
+     * our main program, asks the user for their first and last name, than performs a vowel analysis
      * @param args command line arguments supplied to the program
      * */
     public static void main(String[] args) {
