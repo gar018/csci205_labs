@@ -21,7 +21,7 @@
 package lab05;
 
 import java.util.Scanner;
-
+//completed with Fraction.java
 /**
  * This class encapsulates a set of class methods designed to test out the
  * {@link Fraction} class

@@ -65,11 +65,34 @@ class Fraction {
      *                    defaults to 1/1 and a  message idisplayed
      */
     public Fraction(String strFraction) {
-        this.numerator = 0;
-        this.denominator = 0;
-        this.isValid = false;
+        int nume = 1;
+        int denom = 1;
+        boolean valid = true;
+        // holds the index of where the / is located in the string input
+        int backslashIndex=strFraction.indexOf("/");
 
-        //TODO - FINISH ME!
+        // if returns -1, then fraction doesnt contain /, meaning it's invalid
+        if(backslashIndex == -1){
+            valid=false;
+        }
+        else {
+            try { //attempt to parse the numerator and denominator
+                nume = Integer.parseInt(strFraction.substring(0, backslashIndex).strip());
+                denom = Integer.parseInt(strFraction.substring(backslashIndex + 1).strip());
+                if (denom == 0) {
+                    valid = false;
+                }
+            }
+            catch (NumberFormatException e){ //any problems print an error, and invalidate the fraction
+                System.err.println("PARSING ERROR! - Please input a valid fraction!");
+                nume=1;
+                denom=1;
+                valid=false;
+            }
+        }
+        this.numerator=nume;
+        this.denominator=denom;
+        this.isValid=valid;
     }
 
     /** @return the numerator in the fraction */
@@ -88,16 +111,27 @@ class Fraction {
      * For example, 3/6 would return a new Fraction 1/2. 1/2 would also return 1/2.
      */
     public Fraction getSimplifiedFraction() {
-        //TODO - FINISH ME!
-        return new Fraction(0,0);
+        //the lowest value between the numerator and the denominator
+        int lowestValue = Math.min(this.numerator,this.denominator);
+
+        //the greatest common factor -- starts at 1, and updates whenever a larger common factor is found
+        int gcf = 1;
+
+        for (int i = 1; i <= lowestValue; i++) {
+            //if int and double division equal each other for both nume and denom, then they share a common factor!
+            if (this.numerator/i==this.numerator/(double)i&&this.denominator/i==this.denominator/(double)i) {
+                gcf = i;
+            }
+        }
+
+        return new Fraction(this.numerator/gcf,this.denominator/gcf);
     }
 
     /**
      * @return a new Fraction representing the reciprocal of this fraction
      */
     public Fraction reciprocal() {
-        //TODO - FINISH ME!
-        return new Fraction(0,0);
+        return new Fraction(this.denominator,this.numerator);
     }
 
     /**
@@ -105,16 +139,14 @@ class Fraction {
      * (multiply the numerator or denominator by -1)
      */
     public Fraction negate() {
-        //TODO - FINISH ME!
-        return new Fraction(0,0);
+        return new Fraction(-1*this.numerator,this.denominator);
     }
 
     /**
      * @return this fraction as a single floating point number (e.g. 1/2 ==> 0.5)
      */
     public double getDecimal() {
-        //TODO - FINISH ME!
-        return Double.MAX_VALUE;
+        return (double)this.numerator/this.denominator;
     }
 
     /**
@@ -126,8 +158,9 @@ class Fraction {
      *         otherFrac, simplified
      */
     public Fraction add(Fraction otherFrac) {
-        //TODO - FINISH ME!
-        return new Fraction(0,0);
+        Fraction frac1 = new Fraction(this.numerator*otherFrac.denominator, this.denominator*otherFrac.denominator);
+        Fraction frac2 = new Fraction(otherFrac.numerator*this.denominator, otherFrac.denominator*this.denominator);
+        return new Fraction(frac1.numerator+frac2.numerator,frac1.denominator).getSimplifiedFraction();
     }
 
     /**
@@ -135,8 +168,8 @@ class Fraction {
      * as a new Fraction, simplified
      */
     public Fraction multiply(Fraction otherFrac) {
-        //TODO - FINISH ME!
-        return new Fraction(0,0);
+        //multiplies the numerators by each other, and the denominators, then simplifies
+        return new Fraction(this.numerator*otherFrac.numerator,this.denominator*otherFrac.denominator).getSimplifiedFraction();
     }
 
     /**
@@ -149,8 +182,7 @@ class Fraction {
      * numerator and denominator, in simplified form
      */
     public Fraction multiply(int numerator, int denominator) {
-        //TODO - FINISH ME!
-        return new Fraction(0,0);
+        return new Fraction(this.numerator*numerator,this.denominator*denominator).getSimplifiedFraction();
     }
 
     /**
@@ -160,7 +192,9 @@ class Fraction {
      * @return true if this fraction is greater than {@code otherFrac}
      */
     public boolean isGreaterThan(Fraction otherFrac) {
-        //TODO - FINISH ME!
+        if (this.getDecimal()> otherFrac.getDecimal()){
+            return true;
+        }
         return false;
     }
 
@@ -173,7 +207,9 @@ class Fraction {
      * false otherwise.
      */
     public boolean isEqualTo(Fraction otherFrac) {
-        //TODO - FINISH ME!
+        if (this.getDecimal()== otherFrac.getDecimal()){
+            return true;
+        }
         return false;
     }
 
@@ -188,10 +224,23 @@ class Fraction {
      */
     @Override
     public String toString() {
-        String s = this.numerator+"/"+this.denominator;
-        if (this.isValid()){
-            s = "ERROR - divide by 0";
+        //gather the numerator and denominator
+        int x = this.getNumerator();
+        int y = this.getDenominator();
+
+        //determine whether to use special cases
+        if (x==0) {
+            return "0";
         }
-        return s;
+        else if (y==0) {
+            return "ERROR - divide by 0";
+        }
+        else if (x==y) {
+            return "1";
+        }
+        //else just print a fraction!
+        else {
+            return x+"/"+y;
+        }
     }
 }
