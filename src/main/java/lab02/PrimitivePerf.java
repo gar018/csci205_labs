@@ -40,7 +40,7 @@ public class PrimitivePerf {
         Long wrappedResult = testWrapped();
         wrappedDuration = System.nanoTime() - startTime;
         System.out.println("Answer = " + wrappedResult + ". Time = " + wrappedDuration + " ns");
-        // TODO - Print results, timing, and pct difference between times
+
         // *** PLEASE NOTE: ***
         // I have placed the print results and timing around each test evaluation (lines 31 and 35 for primitive, 38 and 42 for wrapped)
         // the following lines of code are ONLY for pct differences between the two times:
