@@ -71,7 +71,7 @@ public class CashRegister {
      * @return true, false
      */
     public boolean signIn(double initCash) {
-        if (this.state == CashRegisterState.NOT_READY) {
+        if (this.isNotReady()) {
             this.totalCash = initCash;
             this.state = CashRegisterState.READY;
             return true;
@@ -86,13 +86,13 @@ public class CashRegister {
      * @return this.totalCash
      */
     public double signOut() {
-        if (this.state == CashRegisterState.READY) {
+        if (this.isReady()) {
             this.state = CashRegisterState.NOT_READY;
-            return this.totalCash;
+            double cashRemainingInDrawer = this.totalCash;
+            this.totalCash = 0;
+            return cashRemainingInDrawer;
         }
-        else {
-            return 0;
-        }
+        return -1;
     }
 
     /**
@@ -102,19 +102,17 @@ public class CashRegister {
      * @return
      */
     public boolean scanItem(double price) {
-        if (this.state == CashRegisterState.READY){
+        if (this.isReady()){
             this.state = CashRegisterState.SCANNING;
             this.currentTransaction = new Transaction();
             this.currentTransaction.addItem(price);
             return true;
         }
-        else if(this.state == CashRegisterState.SCANNING) {
+        else if(this.isScanning()) {
             this.currentTransaction.addItem(price);
             return true;
         }
-        else {
-            return false;
-        }
+        return false;
     }
 
     /**
@@ -122,19 +120,66 @@ public class CashRegister {
      * @return
      */
     public double getAmountOwed() {
-        if (this.state == CashRegisterState.SCANNING) {
-            return this.currentTransaction.getTotalCost();
-        }
-        else {
-            return 0;
-        }
+        return this.currentTransaction.getTotalCost();
     }
-/*
+
     public double collectPayment(double payment) {
-        if (this.state == CashRegisterState.SCANNING) {
+        if (this.isScanning() || this.isReceivingPmt()) {
             this.state = CashRegisterState.RECEIVE_PMT;
+            this.paymentReceived += payment;
+            if (paymentReceived >= this.getAmountOwed()) {
+                this.state = CashRegisterState.READY;
+                this.totalCash += this.getAmountOwed();
+                this.paymentReceived = 0;
+            }
+            return payment-this.getAmountOwed();
         }
-    }*/
+        return Double.MIN_VALUE;
+    }
+
+    public boolean isNotReady() {
+        if (this.state == CashRegisterState.NOT_READY) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isReady() {
+        if (this.state == CashRegisterState.READY) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isScanning() {
+        if (this.state == CashRegisterState.SCANNING) {
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isReceivingPmt() {
+        if (this.state == CashRegisterState.RECEIVE_PMT) {
+            return true;
+        }
+        return false;
+    }
+    public void setName(String str) {
+        this.registerName = str;
+    }
+
+    public String getName() {
+        return this.registerName;
+    }
+
+    public double getCashInDrawer() {
+        return this.totalCash;
+    }
+
+    public CashRegisterState getState() {
+        return this.state;
+    }
+
 
 
 }

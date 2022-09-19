@@ -29,8 +29,8 @@ public class Transaction {
      * Transaction constructor class: sets numItems and TotalCost to 0
      */
     public Transaction() {
-        numItems = 0;
-        totalCost = 0;
+        this.numItems = 0;
+        this.totalCost = 0;
     }
 
     /**
@@ -38,8 +38,8 @@ public class Transaction {
      * @param price
      */
     public void addItem(double price) {
-        numItems++;
-        totalCost += price;
+        this.numItems++;
+        this.totalCost += price;
     }
 
     /**
@@ -49,9 +49,8 @@ public class Transaction {
     public String toString() {
         return "default";
     }
+    public int getNumItems() { return this.numItems; }
 
-    public double getTotalCost() {
-        return totalCost;
-    }
+    public double getTotalCost() { return this.totalCost; }
 
 }
