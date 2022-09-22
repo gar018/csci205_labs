@@ -16,6 +16,7 @@
 
 package lab07;
 
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ExceptionExample {
@@ -27,10 +28,19 @@ public class ExceptionExample {
         int i = 0;
 
         do {
-            System.out.print("Enter an index to fill, or " + SIZE + " to finish: ");
-            i = scnr.nextInt();
-            if (i != SIZE)
-                x[i] = i;
+            try {
+                System.out.print("Enter an index to fill, or " + SIZE + " to finish: ");
+                i = scnr.nextInt();
+                if (i != SIZE)
+                    x[i] = i;
+            }
+            catch (ArrayIndexOutOfBoundsException e) {
+                System.out.println(i + " is out of range! Try again!");
+            }
+            catch (InputMismatchException e) {
+                System.out.println("Please input integers! Try again!");
+                scnr.nextLine();
+            }
         } while (i != SIZE);
     }
 
