@@ -20,6 +20,7 @@ package lab07;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * The ChangeException exception class extends the RuntimeException class.
@@ -156,6 +157,27 @@ public class SimpleCashRegister {
         paymentCollected = 0;
         return change;
     }
+
+
+    /**
+     * compares the contents of two SimpleCashRegister objects
+     * @return true, false
+     */
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SimpleCashRegister that = (SimpleCashRegister) o;
+
+        if (Double.compare(that.totalTransaction, totalTransaction) != 0) return false;
+        if (Double.compare(that.paymentCollected, paymentCollected) != 0) return false;
+        return Objects.equals(listOfItemPrices, that.listOfItemPrices);
+    }
+
+
+
+
 
     public static void main(String[] args) {
         SimpleCashRegister myRegister = new SimpleCashRegister();

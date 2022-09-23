@@ -91,4 +91,16 @@ class SimpleCashRegisterTest {
         register.collectPayment(Money.QUARTER,1);
         assertThrows(ChangeException.class, () -> giveChange());
     }
+
+    @Test
+    void equals() {
+        SimpleCashRegister otherReg = new SimpleCashRegister();
+        assertTrue(register.equals(otherReg));
+
+        register.scanItem(0.5);
+
+        otherReg.scanItem(0.5);
+        otherReg.scanItem(0.75);
+        assertFalse(register.equals(otherReg));
+    }
 }
