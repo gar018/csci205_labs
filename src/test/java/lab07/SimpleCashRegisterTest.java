@@ -6,6 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class SimpleCashRegisterTest {
@@ -36,6 +38,10 @@ class SimpleCashRegisterTest {
 
     @Test
     void getListOfPurchases() {
+        register.scanItem(.5);
+        register.scanItem(.75);
+        assertEquals(.5, .5);
+        assertEquals(.75, .75);
     }
 
     @Test
@@ -77,5 +83,12 @@ class SimpleCashRegisterTest {
         register.collectPayment(Money.DOLLAR,1);
         assertEquals(.25, register.giveChange());
 
+    }
+
+    @Test
+    void giveChangeException() {
+        register.scanItem(0.75);
+        register.collectPayment(Money.QUARTER,1);
+        assertThrows(ChangeException.class, () -> giveChange());
     }
 }

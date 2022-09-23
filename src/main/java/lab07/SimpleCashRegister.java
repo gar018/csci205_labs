@@ -177,6 +177,7 @@ public class SimpleCashRegister {
             System.err.println(e.getMessage());
         }
 
+        System.out.println(myRegister.getListOfPurchases());
         //testing errors here
         //myRegister.scanItem(-1.00);
         //myRegister.scanItem(MAX_ITEM_PRICE+1);
