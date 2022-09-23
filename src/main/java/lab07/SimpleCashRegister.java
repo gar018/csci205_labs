@@ -2,9 +2,9 @@
  * CSCI205 - Software Engineering and Design
  * Fall 2022
  *
- * Name: YOUR NAME
- * Date: 9/18/22
- * Time: 2:40 PM
+ * Name: Gordon Rose
+ * Date: 9/22/22
+ * Time: 6:00 PM
  *
  * Project: csci205_labs
  * Package: lab07
@@ -22,6 +22,18 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
+ * The ChangeException exception class extends the RuntimeException class.
+ * This is meant to be used when an exception is thrown related to giving change
+ * to a customer
+ */
+class ChangeException extends RuntimeException {
+
+    /** Constructs the ChangeException */
+    public ChangeException(String message) {
+        super(message);
+    }
+}
+/**
  * The <code>CashRegister</code> class models a very simple cash register. The
  * cash register assumes that it has an unlimited supply of money in its drawer,
  * and thus this is not modeled. It handles the management of one transaction of
@@ -31,6 +43,9 @@ import java.util.List;
  * @author Prof. Rick Zaccone and Brian King
  */
 public class SimpleCashRegister {
+
+    /** the maximum price an item can have */
+    private static final double MAX_ITEM_PRICE = 1000.0;
 
     /**
      * The total amount of the current transaction
@@ -88,16 +103,23 @@ public class SimpleCashRegister {
      * Records the sale of an item in a transaction.
      *
      * @param price the price of the item. Precondition: price >= 0
+     * @throws IllegalArgumentException if an invalid price is scanned
      */
     public void scanItem(double price) {
         // If this is the first purchase in the transaction, then clear out the
         // list of purchases
-        if (totalTransaction == 0) {
-            listOfItemPrices.clear();
-        }
+        if (price >= 0 && price <= MAX_ITEM_PRICE) {
+            if (totalTransaction == 0) {
+                listOfItemPrices.clear();
+            }
 
-        listOfItemPrices.add(price);
-        totalTransaction += price;
+            listOfItemPrices.add(price);
+            totalTransaction += price;
+        }
+        else {
+            String msg = String.format("Bad Price: %.2f", price);
+            throw new IllegalArgumentException(msg);
+        }
     }
 
     /**
@@ -106,8 +128,14 @@ public class SimpleCashRegister {
      *
      * @param moneyType the moneyType of the monetary units in the payment
      * @param unitCount the number of monetary units
+     * @throws IllegalArgumentException if the unitCount < 0.00
      */
     public void collectPayment(Money moneyType, int unitCount) {
+
+        if (unitCount < 0.0) {
+            String msg = String.format("Bad unit count: %d", unitCount);
+            throw new IllegalArgumentException(msg);
+        }
         paymentCollected += unitCount * moneyType.getValue();
     }
 
@@ -116,8 +144,13 @@ public class SimpleCashRegister {
      * only if enough money was collected.
      *
      * @return the change due to the customer
+     * @throws ChangeException when the payment collected < the total transaction
      */
-    public double giveChange() {
+    public double giveChange() throws ChangeException {
+        if (paymentCollected<totalTransaction) {
+            String msg = String.format("INSUFFICIENT PAYMENT: Collected $%.2f,  transaction = $%.2f", paymentCollected, totalTransaction);
+            throw new ChangeException(msg);
+        }
         double change = paymentCollected - totalTransaction;
         totalTransaction = 0;
         paymentCollected = 0;
@@ -136,9 +169,18 @@ public class SimpleCashRegister {
         System.out.println("Payment made: " + myRegister.getPaymentCollected());
         System.out.println("Expected: 1.85");
 
-        double myChange = myRegister.giveChange();
-        System.out.println("Change: " + myChange);
-        System.out.println("Expected: 0.03");
+        try {
+            double myChange = myRegister.giveChange();
+            System.out.println("Change: " + myChange);
+            System.out.println("Expected: 0.03");
+        } catch (ChangeException e) {
+            System.err.println(e.getMessage());
+        }
+
+        //testing errors here
+        //myRegister.scanItem(-1.00);
+        //myRegister.scanItem(MAX_ITEM_PRICE+1);
+        //myRegister.collectPayment(Money.DOLLAR, -4);
     }
 
 }
