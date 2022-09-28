@@ -75,20 +75,20 @@ public class HRDBSystem {
     /**
      * Display a list of all of the managers in the system
      */
-//    public void displayManagers() {
-//        for (Employee emp : this.employees) {
-//            if (emp instanceof Manager) {
-//                Manager mgr = (Manager)emp;
-//                System.out.printf("Manager:     %s %s\n", mgr.getFirstName(),
-//                                  mgr.getLastName());
-//                System.out.printf("Department:  %s\n", mgr.getDeptName());
-//                System.out.printf("# Employees: %d\n", mgr.getListOfManagedEmps().size());
-//                for (Employee e : mgr.getListOfManagedEmps()) {
-//                    System.out.println(e.toSimpleString());
-//                }
-//            }
-//        }
-//    }
+    public void displayManagers() {
+        for (Employee emp : this.employees) {
+            if (emp instanceof Manager) {
+                Manager mgr = (Manager)emp;
+                System.out.printf("Manager:     %s %s\n", mgr.getFirstName(),
+                                  mgr.getLastName());
+                System.out.printf("Department:  %s\n", mgr.getDeptName());
+                System.out.printf("# Employees: %d\n", mgr.getListOfManagedEmps().size());
+                for (Employee e : mgr.getListOfManagedEmps()) {
+                    System.out.println(e.toSimpleString());
+                }
+            }
+        }
+    }
 
     /**
      *  A Simple test method to try out some stuff
@@ -105,29 +105,29 @@ public class HRDBSystem {
         hrdb.addNewEmployee(new Employee(10, "Grace", "Hopper", 122310291,
                                          HRUtils.strToDate("1971-05-25"), 250000));
 
-//        Manager mgr = new Manager(11, "Erin", "Jablonski", 867530909,
-//                                  HRUtils.strToDate("2010-02-19"), 200000, "ENGINEERING");
-//        hrdb.addNewEmployee(mgr);
-//        mgr.addEmployee(hrdb.getEmployeeAt(0));
-//        mgr.addEmployee(hrdb.getEmployeeAt(1));
-//        mgr.addEmployee(hrdb.getEmployeeAt(3));
+        Manager mgr = new Manager(11, "Erin", "Jablonski", 867530909,
+                                  HRUtils.strToDate("2010-02-19"), 200000, "ENGINEERING");
+        hrdb.addNewEmployee(mgr);
+        mgr.addEmployee(hrdb.getEmployeeAt(0));
+        mgr.addEmployee(hrdb.getEmployeeAt(1));
+        mgr.addEmployee(hrdb.getEmployeeAt(3));
 
         hrdb.addNewEmployee(new Employee(10, "Robert", "Randolph", 121212121, LocalDate.now(), 145000));
         hrdb.addNewEmployee(new Employee(10, "Jimi", "Hendrix", 000000001, LocalDate.now(), 250000));
         hrdb.addNewEmployee(new Employee(201, "Nancy", "Wilson", 111111111,
                                          HRUtils.strToDate("1989-02-10"), 125000));
 
-//        mgr = new Manager(-1, "John", "Bravman", 121230103,
-//                                  HRUtils.strToDate("2010-02-19"), 300000, "ADMIN");
-//        hrdb.addNewEmployee(mgr);
-//        mgr.addEmployee(hrdb.getEmployeeAt(2));
-//        mgr.addEmployee(hrdb.getEmployeeAt(5));
-//        mgr.addEmployee(hrdb.getEmployeeAt(6));
+        mgr = new Manager(-1, "John", "Bravman", 121230103,
+                                  HRUtils.strToDate("2010-02-19"), 300000, "ADMIN");
+        hrdb.addNewEmployee(mgr);
+        mgr.addEmployee(hrdb.getEmployeeAt(2));
+        mgr.addEmployee(hrdb.getEmployeeAt(5));
+        mgr.addEmployee(hrdb.getEmployeeAt(6));
 
         System.out.println("*** LIST OF EMPLOYEES ***");
         hrdb.displayEmployees();
-//        System.out.println("*** MANAGER INFO ***");
-//        hrdb.displayManagers();
+        System.out.println("*** MANAGER INFO ***");
+        hrdb.displayManagers();
     }
 
 }
