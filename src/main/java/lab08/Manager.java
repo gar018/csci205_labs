@@ -2,7 +2,7 @@
  * CSCI205 - Software Engineering and Design
  * Fall 2022
  *
- * Name: YOUR NAME
+ * Name: Gordon Rose
  * Date: 09/22/2022
  * Time: 11:01 PM
  *

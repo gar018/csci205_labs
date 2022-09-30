@@ -2,10 +2,10 @@
  * CSCI205 - Software Engineering and Design
  * Fall 2022
  *
- * TODO - Enter the details below!
- * Name: TODO
- * Date: TODO
- * Time: TODO
+ *
+ * Name: Gordon Rose
+ * Date: 9/29/22
+ * Time: 1:00pm
  *
  * Project: csci205
  * Package: lab08
@@ -17,6 +17,7 @@
 package lab08;
 
 import java.time.LocalDate;
+import java.util.HashSet;
 
 /**
  * A basic representation for an Employee to be stored in an HR database system
@@ -43,6 +44,10 @@ public class Employee {
     /** Current salary of the employee */
     private double salary;
 
+    /** Set of Employee IDs in use */
+
+    private static HashSet<Integer> setOfAssignedIDs = new HashSet<>();
+
     /**
      * Explicit constructor to create new employee
      *
@@ -54,7 +59,29 @@ public class Employee {
      * @param salary    Current employee salary
      */
     public Employee(int empID, String firstName, String lastName, int ssNum, LocalDate hireDate, double salary) {
-        this.empID = empID;
+        boolean generateIdBool = false;
+        if (empID <= 0) {
+            generateIdBool = true;
+        }
+
+        else if (empID > 0){
+            for (Integer id : setOfAssignedIDs) {
+                if (id.equals(empID)) {
+                    generateIdBool = true;
+                }
+            }
+        }
+
+        int givenID;
+        if (generateIdBool) {
+            givenID = generateID();
+        }
+        else {
+            givenID = empID;
+        }
+
+        setOfAssignedIDs.add(givenID);
+        this.empID = givenID;
         this.firstName = firstName;
         this.lastName = lastName;
         this.ssNum = ssNum;
@@ -184,5 +211,20 @@ public class Employee {
         return ssNum == employee.ssNum;
     }
 
+    public static Integer generateID() {
+        Integer id = 0;
+        boolean duplicateFound;
+        if (setOfAssignedIDs.isEmpty()) {
+            return 1;
+        }
+        do {
+            duplicateFound = false;
+            id = id + 1;
+            if(setOfAssignedIDs.contains(id)) {
+                duplicateFound = true;
+            }
+        } while (duplicateFound);
+        return id;
+    }
 }
 
