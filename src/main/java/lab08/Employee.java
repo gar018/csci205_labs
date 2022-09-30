@@ -44,10 +44,6 @@ public class Employee {
     /** Current salary of the employee */
     private double salary;
 
-    /** Set of Employee IDs in use */
-
-    private static HashSet<Integer> setOfAssignedIDs = new HashSet<>();
-
     /**
      * Explicit constructor to create new employee
      *
@@ -59,29 +55,8 @@ public class Employee {
      * @param salary    Current employee salary
      */
     public Employee(int empID, String firstName, String lastName, int ssNum, LocalDate hireDate, double salary) {
-        boolean generateIdBool = false;
-        if (empID <= 0) {
-            generateIdBool = true;
-        }
 
-        else if (empID > 0){
-            for (Integer id : setOfAssignedIDs) {
-                if (id.equals(empID)) {
-                    generateIdBool = true;
-                }
-            }
-        }
-
-        int givenID;
-        if (generateIdBool) {
-            givenID = generateID();
-        }
-        else {
-            givenID = empID;
-        }
-
-        setOfAssignedIDs.add(givenID);
-        this.empID = givenID;
+        this.empID = IDFactory.safeToUse(empID);
         this.firstName = firstName;
         this.lastName = lastName;
         this.ssNum = ssNum;
@@ -211,20 +186,57 @@ public class Employee {
         return ssNum == employee.ssNum;
     }
 
-    public static Integer generateID() {
-        Integer id = 0;
-        boolean duplicateFound;
-        if (setOfAssignedIDs.isEmpty()) {
-            return 1;
-        }
-        do {
-            duplicateFound = false;
-            id = id + 1;
-            if(setOfAssignedIDs.contains(id)) {
-                duplicateFound = true;
+    /**
+     * A factory to generate employee IDS in a safe way
+     */
+    private static class IDFactory {
+
+        /** Set of Employee IDs in use */
+
+        private static HashSet<Integer> setOfAssignedIDs = new HashSet<>();
+
+        /**
+         * generates an ID number (starts at 1) that is not a duplicate value within
+         * the already assigned ID list
+         * @return 1 (if assignedID set is empty), id
+         */
+        private static Integer generateID() {
+            Integer id = 1;
+            if (setOfAssignedIDs.isEmpty()) {
+                return id;
             }
-        } while (duplicateFound);
-        return id;
+            while (id < Integer.MAX_VALUE) {
+                if(!setOfAssignedIDs.contains(id)) {
+                    IDFactory.setOfAssignedIDs.add(id);
+                    return id;
+                }
+                id+=1;
+            }
+            return -1; //SHOULD NEVER REACH THIS STATEMENT! IF AN ID IS -1 THERE IS A SERIOUS PROBLEM
+        }
+
+        /**
+         * determines if the given ID is valid, otherwise,
+         * runs generateID to produce a valid one
+         * @param givenID
+         * @return finalID
+         */
+        private static Integer safeToUse(int givenID) {
+            int finalID;
+            if (givenID <= 0) {
+                return finalID = generateID();
+            }
+
+            else if (givenID > 0){
+                for (Integer id : IDFactory.setOfAssignedIDs) {
+                    if (id.equals(givenID)) {
+                        return finalID = generateID();
+                    }
+                }
+            }
+            IDFactory.setOfAssignedIDs.add(givenID);
+            return finalID = givenID;
+        }
     }
 }
 
