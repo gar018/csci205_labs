@@ -30,8 +30,6 @@ class ManagerException extends Exception {
 }
 
 public class Manager extends Employee {
-
-    // TODO - ERASE ME AND FOLLOW THE LAB INSTRUCTIONS
     /** manager's department name*/
     private String deptName;
 

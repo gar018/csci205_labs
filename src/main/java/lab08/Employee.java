@@ -181,8 +181,8 @@ public class Employee {
         if (!(o instanceof Employee employee))
             return false;
 
-//        if (empID != employee.empID)
-//            return false;
+       if (empID != employee.empID)
+            return false;
         return ssNum == employee.ssNum;
     }
 
