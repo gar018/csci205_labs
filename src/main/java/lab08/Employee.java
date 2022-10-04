@@ -24,7 +24,7 @@ import java.util.HashSet;
  *
  * @author Brian King
  */
-public class Employee {
+public class Employee implements Payable {
 
     /** Employee id */
     private int empID;
@@ -154,6 +154,33 @@ public class Employee {
     }
 
     /**
+     * @param numHrs
+     * @return
+     */
+    @Override
+    public double calculatePay(double numHrs) {
+        final double FULL_TIME_WORK_WEEK = 40;
+        final double WEEKS_IN_YEAR = 52;
+        return (this.salary*numHrs)/(FULL_TIME_WORK_WEEK*WEEKS_IN_YEAR);
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public String getPayTo() {
+        return this.firstName+" "+this.lastName;
+    }
+
+    /**
+     * @return
+     */
+    @Override
+    public String getPayMemo() {
+        return "Employee ID: " + getEmpID() + ", Pay Date: " + HRUtils.dateToStr(LocalDate.now());
+    }
+
+    /**
      * The standard toString to show a string representation of an Employee
      *
      * @return a String representing this Employee
@@ -185,6 +212,8 @@ public class Employee {
             return false;
         return ssNum == employee.ssNum;
     }
+
+
 
     /**
      * A factory to generate employee IDS in a safe way
