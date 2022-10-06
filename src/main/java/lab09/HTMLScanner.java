@@ -21,10 +21,7 @@ package lab09;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
-import java.util.Map;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -86,7 +83,6 @@ public class HTMLScanner {
 
         String s = String.format("Tags Found: %d, Unique Tags: %d%n",getTotalTagCount(),getTotalUniqueTagCount());
         Set<String> tagSet = mapOfTags.keySet();
-
         for ( String keyStr : tagSet) {
             s+= String.format("<%s>: %d%n", keyStr, mapOfTags.get(keyStr));
         }
@@ -99,6 +95,11 @@ public class HTMLScanner {
             System.out.println(s);
         }
     }
+
+    /**
+     * scans for tags in URL file and appends the mapOfTags Map to keep track of frequency
+     * @throws IOException
+     */
     public void scanForTags() throws IOException {
 
         //Pattern matchForTag = Pattern.compile("<([^>]*)>");
