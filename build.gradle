@@ -26,6 +26,8 @@ run {
 
 test {
     useJUnitPlatform()
+
+    testLogging {events "passed", "skipped", "failed", "standard_out", "standard_error"}
 }
 
 // Needs to be 17, ideally, it should match your JDK
