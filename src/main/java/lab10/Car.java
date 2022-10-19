@@ -72,36 +72,43 @@ public class Car {
     public Car(String csvRecord) {
         String[] dataArray = csvRecord.split(",");
 
-        initialize(this.mpg,dataArray[0]);
-        initialize(this.cylinders,dataArray[1]);
-        initialize(this.displacement,dataArray[2]);
-        initialize(this.horsepower,dataArray[3]);
-        initialize(this.weight,dataArray[4]);
-        initialize(this.accel,dataArray[5]);
-        initialize(this.modelYear,dataArray[6]);
-        initialize(this.origin,dataArray[7]);
+        this.mpg = initializeDouble(dataArray[0]);
+        this.cylinders = initializeInt(dataArray[1]);
+        this.displacement = initializeDouble(dataArray[2]);
+        this.horsepower = initializeDouble(dataArray[3]);
+        this.weight = initializeDouble(dataArray[4]);
+        this.accel = initializeDouble(dataArray[5]);
+        this.modelYear = initializeInt(dataArray[6]);
+        this.origin = initializeInt(dataArray[7]);
+        this.carName =initializeString(dataArray[8]);
     }
 
-    public void initialize(double var, String data) {
+    public double initializeDouble(String data) {
+        double var = 0.0;
         try {
             var = Double.parseDouble(data);
         }
         catch(NumberFormatException e) {
-            var = 0.0;
+            return var;
         }
+        return var;
     }
 
-    public void initialize(int var, String data) {
+    public int initializeInt(String data) {
+        int var = 0;
         try {
             var = Integer.parseInt(data);
         }
         catch(NumberFormatException e) {
-            var = 0;
+            return var;
         }
+        return var;
     }
 
-    public void initialize(String var, String data) {
+    public String initializeString(String data) {
+        String var = "";
         var = data;
+        return var;
     }
     // SETTER AND GETTER METHODS -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
     public double getMpg() {

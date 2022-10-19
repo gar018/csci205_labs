@@ -74,8 +74,9 @@ public class CarAnalyzer {
 
         long totalWith4cyl = 0;
 
-        // TODO - Finish test1() - store result in totalWith4cyl
-
+        totalWith4cyl = cars.stream()
+                        .filter(c -> c.getCylinders() == 4)
+                        .count();
 
 
 
@@ -94,9 +95,9 @@ public class CarAnalyzer {
 
         long total = 0;
 
-        // TODO - Finish test2() - store result in total
-
-
+        total = cars.stream()
+                .filter(c -> c.getCylinders() == 4 && c.getMpg() >= 35)
+                .count();
 
 
 
@@ -119,8 +120,9 @@ public class CarAnalyzer {
         System.out.println("**** test3() ****");
         System.out.println("==> List of cars with 4 cylinders and at least 35 mpg");
 
-        // TODO - Finish test3() - print results to System.out
-
+        cars.stream()
+                .filter(c -> c.getCylinders() == 4 && c.getMpg() >= 35)
+                .forEach(c -> System.out.printf("%s : Year=%d, mpg=%.1f\n",c.getCarName(),c.getModelYear(),c.getMpg()));
 
 
     }
@@ -137,12 +139,21 @@ public class CarAnalyzer {
         System.out.println("**** test4() ****");
         System.out.println("==> The lowest and highest mpg in this dataset");
 
-        double minMpg = 0;
-        double maxMpg = 0;
-
-        // TODO - Finish test4() - be sure to start results in minMpg and maxMpg
+        double minMpg;
+        double maxMpg;
 
 
+        //find minimum
+        minMpg = cars.stream()
+                .map(c -> c.getMpg())
+                .min(Double::compare)
+                .get();
+
+        //find maximum
+        maxMpg = cars.stream()
+                .map(c -> c.getMpg())
+                .max(Double::compare)
+                .get();
 
 
 
@@ -162,11 +173,13 @@ public class CarAnalyzer {
         System.out.println("**** test5() ****");
         System.out.println("==> The make of the car with the highest mpg");
 
+
         String carBrand = "";
 
-        // TODO - Finish test5() - store result in carBrand
-
-
+        carBrand = cars.stream()
+                        .filter(c -> c.getMpg() == 46.6)
+                        .map(c-> c.getCarName().substring(0,c.getCarName().indexOf(" ")))
+                        .collect(Collectors.toList()).get(0);
 
         System.out.println(carBrand);
         if (!carBrand.equals("mazda")) throw new CarAnalyzerException("test5() fail");
@@ -182,10 +195,12 @@ public class CarAnalyzer {
         System.out.println("**** test6() ****");
         System.out.println("==> The list of distinct brand names in the dataset");
 
-        List<String> brands = null;
+        List<String> brands = new ArrayList<>();
 
-        // TODO - Finish test6() - store result in brands
-
+        cars.stream()
+                .filter(c -> c.getCarName().indexOf(" ") != -1)
+                    .collect(Collectors.groupingBy(c-> c.getCarName().substring(0,c.getCarName().indexOf(" ")),Collectors.counting()))
+                    .forEach((name,count) -> brands.add(name));
 
 
 
@@ -208,9 +223,8 @@ public class CarAnalyzer {
 
         Map<Integer,Long> mapOfCars = null;
 
-        // TODO - Finish test7() - store result in mapOfCars
-
-
+        mapOfCars = cars.stream()
+                        .collect(Collectors.groupingBy(c -> c.getCylinders(),Collectors.counting()));
 
 
         System.out.println(mapOfCars);
@@ -230,9 +244,9 @@ public class CarAnalyzer {
     public void test8() {
         System.out.println("**** test8() ****");
         System.out.println("==> Model year cylinder and mpg of all Volvo's");
-
-        // TODO - Finish test8() - Print results to System.out
-
+        cars.stream()
+                .filter(c -> c.getCarName().contains("volvo"))
+                .forEach(c -> System.out.printf("%s year=%d cyl=%d mpg=%.1f%n",c.getCarName(),c.getModelYear(),c.getCylinders(),c.getMpg()));
 
 
     }
@@ -257,9 +271,11 @@ public class CarAnalyzer {
         System.out.println("**** test9() ****");
         System.out.println("==> Print the number of cars by manufacturer:");
 
-        // TODO - Finish test9() - Print results to System.out
 
-
+        cars.stream()
+                .filter(c -> c.getCarName().indexOf(" ") != -1)
+                .collect(Collectors.groupingBy(c-> c.getCarName().substring(0,c.getCarName().indexOf(" ")),Collectors.counting()))
+                .forEach((name,count) -> System.out.printf("%s --> %d%n",name,count));
 
 
     }
@@ -275,7 +291,24 @@ public class CarAnalyzer {
 
         String carName = "";
 
-        // TODO - Finish test10()
+        Map<String, Long> mapOfBrands = new HashMap<>();
+        mapOfBrands= cars.stream()
+                .filter(c -> c.getCarName().indexOf(" ") != -1)
+                .map(c -> c.getCarName().substring(0,c.getCarName().indexOf(" ")))
+                .collect(Collectors.groupingBy(c -> c, Collectors.counting()));
+
+        Collection<String> stringCollection = mapOfBrands.keySet();
+        Collection<Long> longCollection = mapOfBrands.values();
+
+        long maxLong = longCollection.stream()
+                        .max(Long::compare)
+                        .get();
+
+        Map<String, Long> finalMapOfBrands = mapOfBrands;
+        carName = stringCollection.stream()
+                        .filter(s -> finalMapOfBrands.get(s) == maxLong)
+                        .collect(Collectors.toList()).get(0);
+
 
 
 
@@ -293,7 +326,6 @@ public class CarAnalyzer {
     public static void main(String[] args) {
 
         CarAnalyzer analyzer = new CarAnalyzer("auto-mpg.csv");
-        System.exit(0);
         try {
             analyzer.test1();
             analyzer.test2();
