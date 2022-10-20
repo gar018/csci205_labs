@@ -10,7 +10,7 @@
  * Package: lab10.ex3
  * Class: TempConverter
  *
- * Description:
+ * Description: a simple program that converts fahrenheit to celsius
  *
  *
  ****************************************

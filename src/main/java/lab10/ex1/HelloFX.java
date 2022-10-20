@@ -10,7 +10,7 @@
  * Package: lab10.ex1
  * Class: HelloFX
  *
- * Description:
+ * Description: brief introduction to setting a Stage in JavaFX
  *
  *
  ****************************************

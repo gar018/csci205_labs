@@ -10,7 +10,7 @@
  * Package: lab10.ex2
  * Class: HelloMe
  *
- * Description:
+ * Description: using styling in JavaFX
  *
  *
  ****************************************
