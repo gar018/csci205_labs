@@ -4,7 +4,7 @@
  *
  * Author: Prof. King
  *
- * Name: YOUR NAME
+ * Name: Gordon Rose
  * Date: 10/16/2022
  * Time: 9:30 PM
 
@@ -60,7 +60,11 @@ public class TempConverterMain extends Application {
     @Override
     public void start(Stage primaryStage) {
         Scene scene = new Scene(this.theView.getRoot());
-        primaryStage.setTitle("F to C Converter");
+
+        //CSS Time !!!
+        scene.getStylesheets().add(getClass().getResource("/lab10/tempconvertermvc.css").toExternalForm());
+
+        primaryStage.setTitle("Temperature Converter");
         primaryStage.setScene(scene);
         primaryStage.sizeToScene();
         primaryStage.show();

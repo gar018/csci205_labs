@@ -4,7 +4,7 @@
  *
  * Author: Prof. King
  *
- * Name: YOUR NAME
+ * Name: Gordon Rose
  * Date: 10/16/2022
  * Time: 9:30 PM
 
@@ -24,12 +24,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+
+import java.util.spi.ToolProvider;
 
 /**
  * This is the "view" in the MVC design for the temperature converter. A view class
@@ -41,10 +41,16 @@ public class TempConverterView {
     private TempConverterModel theModel;
 
     /** Root node for the scene graph */
-    private VBox root;
+    private BorderPane root;
 
     /** topPane is the {@link FlowPane} layout container for the top of the view */
     private FlowPane topPane;
+
+    /** leftPane is the {@link VBox} used to handle the toggling of which units are converted via Radio Buttons */
+    private VBox leftPane;
+
+    /** The {@link Label} that shows what unit is being converted */
+    private Label lblUnits;
 
     /** The {@link TextField} control where the user enters text */
     private TextField textFieldTempInput;
@@ -54,6 +60,15 @@ public class TempConverterView {
 
     /** The {@link Button} that initiates a temperature conversion */
     private Button btnConvert;
+
+    /** The {@link RadioButton} that indicates the conversion from Fahrenheit to Celsius */
+
+    private RadioButton rbFtoC;
+
+    /** The {@link RadioButton} that indicates the conversion from Celsius to Fahrenheit */
+
+    private RadioButton rbCtoF;
+
 
     /**
      * Construct a new instance of the entire scene graph for
@@ -99,33 +114,73 @@ public class TempConverterView {
         return btnConvert;
     }
 
+    public Label getLblUnits() {
+        return lblUnits;
+    }
+
+    public RadioButton getRbFtoC() {
+        return rbFtoC;
+    }
+
+    public RadioButton getRbCtoF() {
+        return rbCtoF;
+    }
+
     /**
      * Initialize the entire scene graph
      */
     private void initSceneGraph() {
-        root = new VBox();
+        root = new BorderPane();
 
         // Set up top pane container to hold the text field to
         // enter a temperature
         topPane = new FlowPane();
+        topPane.setId("topPane");
+
+        //Set up a left pane container to manage the toggling between units converted
+        leftPane = new VBox();
 
         // Text Field to enter the temperature
         textFieldTempInput = new TextField();
 
+        //Label for which units are being converted
+        lblUnits = new Label("(F)");
+
         // Add leaf nodes for top pane
-        topPane.getChildren().add(new Label("Temperature (F):"));
+        topPane.getChildren().add(new Label("Temperature:"));
         topPane.getChildren().add(textFieldTempInput);
+        topPane.getChildren().add(lblUnits);
+
 
         // Middle section will show the result
         lblResult = new Label("");
+        lblResult.setId("lblResult");
 
         // Set up the button to initiate the conversion
         btnConvert = new Button("Convert!");
 
-        // Add the three main sections for the VBox root container
-        root.getChildren().add(topPane);
+        //Add the F to C / C to F radio button toggle system
+        ToggleGroup group = new ToggleGroup();
+        rbFtoC = new RadioButton("F to C");
+        rbCtoF = new RadioButton("C to F");
+        rbFtoC.setToggleGroup(group);
+        rbCtoF.setToggleGroup(group);
+        rbFtoC.setSelected(true);
+
+        //Add Radio Buttons to the left pane container
+        leftPane.getChildren().addAll(rbFtoC,rbCtoF);
+
+        // Add the three main sections for the VBox root container (now FlowPane)
+        root.setTop(topPane);
+        root.setCenter(lblResult);
+        root.setBottom(btnConvert);
+        root.setLeft(leftPane);
+
+       /* root.getChildren().add(topPane);
         root.getChildren().add(lblResult);
-        root.getChildren().add(btnConvert);
+        root.getChildren().add(btnConvert);*/
+
+
     }
 
     /**
@@ -133,20 +188,24 @@ public class TempConverterView {
      * for this view
      */
     public void initStyling() {
-        root.setSpacing(5);
-        root.setPrefWidth(250);
-        root.setPadding(new Insets(10, 5, 10, 5));
-        root.setAlignment(Pos.CENTER);
+        //root.setSpacing(5);
+        //root.setPrefSize(300,150);
+        //root.setPadding(new Insets(15));
+        //root.setAlignment(Pos.CENTER);
 
-        topPane.setOrientation(Orientation.HORIZONTAL);
-        topPane.setAlignment(Pos.CENTER);
-        topPane.setHgap(10);
+        //topPane.setOrientation(Orientation.HORIZONTAL);
+        //topPane.setAlignment(Pos.CENTER);
+        //topPane.setHgap(10);
 
-        textFieldTempInput.setAlignment(Pos.CENTER);
-        textFieldTempInput.setPrefColumnCount(5);
+        //textFieldTempInput.setAlignment(Pos.CENTER);
+        //textFieldTempInput.setPrefColumnCount(5);
 
-        lblResult.setPrefWidth(75);
-        lblResult.setPrefHeight(25);
+        //lblResult.setPrefWidth(75);
+        //lblResult.setPrefHeight(25);
+
+        //leftPane.setSpacing(10);
+
+        BorderPane.setAlignment(btnConvert,Pos.CENTER);
 
         // Set up a border to appear around the converted temp
 //        lblResult.setBorder(new Border(new BorderStroke(null,
@@ -154,9 +213,9 @@ public class TempConverterView {
 //                                                        new CornerRadii(4),
 //                                                        BorderWidths.DEFAULT)));
         // Let's use CSS instead!
-        lblResult.setStyle("-fx-border-style: solid; " +
-                           "-fx-border-radius: 4");
+        //lblResult.setStyle("-fx-border-style: solid; " +
+        //                   "-fx-border-radius: 4");
 
-        lblResult.setAlignment(Pos.CENTER);
+        //lblResult.setAlignment(Pos.CENTER);
     }
 }

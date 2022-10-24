@@ -4,20 +4,21 @@
  *
  * Author: Prof. King
  *
- * Name: YOUR NAME
+ * Name: Gordon Rose
  * Date: 10/16/2022
  * Time: 9:30 PM
 
  * Project: csci205_labs
  * Class: TempConverterController
  *
- * Description:
+ * Description: the Controller class of the TempConverter program
  *
  * ****************************************
  */
 
 package lab10.tempconvertermvc;
 
+import javafx.beans.binding.Bindings;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Alert;
 
@@ -40,6 +41,7 @@ public class TempConverterController {
         this.theView = theView;
 
         initEventHandlers();
+        initBindings();
     }
 
     /**
@@ -48,6 +50,32 @@ public class TempConverterController {
     private void initEventHandlers() {
         this.theView.getBtnConvert().setOnAction(this::handleActionEvent);
         this.theView.getTextFieldTempInput().setOnAction(this::handleActionEvent);
+        this.theView.getRbFtoC().setOnAction(this::handleActionEvent);
+        this.theView.getRbCtoF().setOnAction(this::handleActionEvent);
+
+        theModel.lastTempConvertedInCProperty().addListener((observable, oldValue, newValue) -> {
+            double hue = (1 - newValue.doubleValue() / 40.0 ) * 240;
+            if (hue > 240) hue = 240;
+            if (hue < 0) hue = 0;
+            String hsbString = "hsb(" + hue + ",100%,75%);";
+            this.theView.getLblResult().setStyle(
+                    "-fx-border-color: " + hsbString +
+                    "-fx-text-fill: " + hsbString
+            );
+        });
+
+    }
+
+    /**
+     * initialize the bindings used in the controller
+     */
+    private void initBindings() {
+        theModel.isSetForFtoCProperty().bind(theView.getRbFtoC().selectedProperty());
+        theModel.isSetForCtoFProperty().bind(theView.getRbCtoF().selectedProperty());
+
+        theView.getLblUnits().textProperty().bind(Bindings.when(theModel.isSetForFtoCProperty())
+                .then("(F)")
+                .otherwise("(C)"));
     }
 
     /**
@@ -59,8 +87,12 @@ public class TempConverterController {
     public void handleActionEvent(ActionEvent event) {
         try {
             String s = this.theView.getTextFieldTempInput().getText();
-            String result = this.theModel.convertFtoC(s);
-            this.theView.getLblResult().setText(result);
+
+            if (s.length() > 0) { // only should convert if there is a string there to convert
+                String result = this.theModel.strTempConvert(s);
+                this.theView.getLblResult().setText(result);
+            }
+
         }
         catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
